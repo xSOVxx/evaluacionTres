@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Layout } from './shared/components/layout/layout';
 import { AuthGuard } from './core/guards/auth-guard';
 
-const routes: Routes = [
+export const routes: Routes = [
   // --- RUTA PÚBLICA: LOGIN ---
   {
     path: 'login',
@@ -39,8 +39,7 @@ const routes: Routes = [
     ]
   },
 
-  // --- RUTA COMODÍN (Catch-all) ---
-  // Si la URL no coincide con nada, redirige a 'login'
+
   { 
     path: '**', 
     redirectTo: 'login' 

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { SalonesRoutingModule } from './salones-routing-module';
 import { ListaSalones } from './pages/lista-salones/lista-salones';
+import {  ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared-module';
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import { ListaSalones } from './pages/lista-salones/lista-salones';
   ],
   imports: [
     CommonModule,
-    SalonesRoutingModule
+    SalonesRoutingModule,
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class SalonesModule { }

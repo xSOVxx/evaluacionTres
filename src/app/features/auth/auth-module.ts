@@ -9,6 +9,7 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
+import { CoreModule } from '../../core/core.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { MessageModule } from 'primeng/message';
     InputTextModule,
     ButtonModule,
     MessageModule,
+    CoreModule   
   ]
 })
 export class AuthModule { }

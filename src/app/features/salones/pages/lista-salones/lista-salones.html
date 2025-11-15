@@ -1,2 +1,157 @@
-<p>lista-salones works!</p>
-<p>¡HOLA MUNDO DESDE LISTA-SALONES!</p>
+<h1 class="text-3xl font-bold text-gray-800 mb-6">
+    <i class="fa-solid fa-store mr-3"></i>
+    Salones y Mesas
+</h1>
+<app-salon-modal 
+  [visible]="modalSalonVisible"
+  [salon]="salonParaEditar"
+  (onClose)="cerrarModalSalon()"
+  (onSave)="onSalonGuardado()">
+</app-salon-modal>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <div class="lg:col-span-1 flex flex-col h-[calc(100vh-12rem)]">
+
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Listado de salones</h2>
+
+        <div class="flex gap-2 mb-4">
+            <input type="text" [formControl]="filtroNombre" placeholder="Buscar..."
+                class="flex-1 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button (click)="abrirModalCrearSalon()"
+                class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition-colors">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 bg-white rounded-lg shadow overflow-y-auto">
+            <div *ngIf="cargandoSalones" class="p-4 text-center text-gray-500">Cargando salones...</div>
+
+            <ul *ngIf="!(cargandoSalones) && (salones$ | async) as salones">
+                <li *ngIf="salones.length === 0" class="p-4 text-center text-gray-500">No se encontraron salones.</li>
+
+                <li *ngFor="let salon of salones" class="border-b last:border-b-0 cursor-pointer"
+                    (click)="seleccionarSalon(salon)" [ngClass]="{
+            'bg-blue-50 border-l-4 border-l-blue-500': salon.lounge_id.toString() == salonSeleccionadoId,
+            'hover:bg-gray-50': salon.lounge_id.toString() != salonSeleccionadoId
+          }">
+
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-lg text-gray-800">{{ salon.lounge_name }}</span>
+
+                            <span *ngIf="salon.lounge_state === '1'"
+                                class="px-2 py-0.5 text-xs font-semibold text-green-700 bg-green-100 rounded-full">
+                                Activo
+                            </span>
+                            <span *ngIf="salon.lounge_state !== '1'"
+                                class="px-2 py-0.5 text-xs font-semibold text-red-700 bg-red-100 rounded-full">
+                                Inactivo
+                            </span>
+                        </div>
+
+                        <div class="text-sm text-gray-600 mb-3">
+                            <i class="fa-solid fa-clipboard-list w-4 mr-1"></i>
+                            {{ salon.cantidad_mesas }} mesas
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button (click)="abrirModalEditarSalon(salon); $event.stopPropagation()"
+                                class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                <i class="fa-solid fa-pencil w-4 mr-1"></i>
+                                Editar
+                            </button>
+
+                            <button *ngIf="salon.lounge_state === '1'"
+                                class="text-sm text-red-500 hover:text-red-700 font-medium">
+                                <i class="fa-solid fa-times w-4 mr-1"></i>
+                                Inactivar
+                            </button>
+                            <button *ngIf="salon.lounge_state !== '1'"
+                                class="text-sm text-green-600 hover:text-green-800 font-medium">
+                                <i class="fa-solid fa-check w-4 mr-1"></i>
+                                Activar
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="lg:col-span-2 h-[calc(100vh-12rem)]">
+
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">
+            <i class="fa-solid fa-chair mr-2"></i>
+            Mesas del salón
+        </h2>
+
+        <div class="bg-white rounded-lg shadow h-full overflow-y-auto">
+            <div *ngIf="cargandoMesas" class="p-6 text-center text-gray-500">Cargando mesas...</div>
+
+            <div *ngIf="!cargandoMesas && !salonSeleccionadoId" class="p-6 text-center text-gray-500">
+                <i class="fa-solid fa-arrow-left text-2xl mb-3"></i>
+                <p>Selecciona un salón para ver sus mesas.</p>
+            </div>
+
+            <table *ngIf="!cargandoMesas && salonSeleccionadoId && (mesas$ | async) as mesas"
+                class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Mesa
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Capacidad
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Estado
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Acciones
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr *ngIf="mesas.length === 0">
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">Este salón no tiene mesas.</td>
+                    </tr>
+
+                    <tr *ngFor="let mesa of mesas" class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {{ mesa.table_name }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            {{ mesa.table_capacity }} personas
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span *ngIf="mesa.table_state === '1'"
+                                class="px-2 py-0.5 text-xs font-semibold text-green-700 bg-green-100 rounded-full">
+                                Activo
+                            </span>
+                            <span *ngIf="mesa.table_state !== '1'"
+                                class="px-2 py-0.5 text-xs font-semibold text-red-700 bg-red-100 rounded-full">
+                                Inactivo
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="modalSalonVisible">
+    <p>El modal para crear/editar salón debería aparecer aquí.</p>
+    <button (click)="cerrarModalSalon()">Cerrar</button>
+</div>

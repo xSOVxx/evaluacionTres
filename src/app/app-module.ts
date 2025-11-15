@@ -8,11 +8,11 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { SharedModule } from './shared/shared-module';
 import { ButtonModule } from 'primeng/button';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 ;
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { tokenInterceptor } from './core/interceptors/token-interceptor';
 
 @NgModule({
   declarations: [
@@ -30,13 +30,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()),
-    provideAnimationsAsync(),
-        providePrimeNG({
-            theme: {
-                preset: Aura
-            }
-        })
+    HttpClientModule,
+provideHttpClient(
+    withInterceptors([tokenInterceptor])
+  )
   ],
   bootstrap: [App]
 })

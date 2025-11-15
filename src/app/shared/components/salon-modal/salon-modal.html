@@ -1,0 +1,102 @@
+<div 
+  class="fixed inset-0 z-40 flex items-center justify-center transition-opacity duration-300"
+  [ngClass]="{
+    'opacity-100 visible': visible,
+    'opacity-0 invisible': !visible
+  }">
+
+  <div 
+    (click)="close()"
+    class="absolute inset-0 bg-black/60">
+  </div>
+
+  <div class="relative z-50 bg-white rounded-lg shadow-xl w-full max-w-lg p-6 m-4">
+    
+    <div class="flex items-center justify-between pb-4 border-b">
+      <h3 class="text-2xl font-bold text-gray-800">
+        <i class="fa-solid fa-store mr-2"></i>
+        {{ isEditMode ? 'Editar Salón' : 'Crear Salón' }}
+      </h3>
+      <button (click)="close()" class="p-2 rounded-full text-gray-600 hover:bg-gray-100">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="salonForm" (ngSubmit)="guardarSalon()">
+      <div class="py-6 space-y-4">
+        
+        <div>
+          <label for="lounge_name" class="block text-sm font-medium text-gray-700 mb-1">
+            Nombre del salón
+          </label>
+          <input 
+            id="lounge_name"
+            type="text" 
+            formControlName="lounge_name"
+            placeholder="Ejm: Terraza"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [ngClass]="{ 'border-red-500': salonForm.get('lounge_name')?.invalid && salonForm.get('lounge_name')?.touched }"
+          />
+          <span *ngIf="salonForm.get('lounge_name')?.invalid && salonForm.get('lounge_name')?.touched" class="text-xs text-red-600 mt-1">
+            El nombre es obligatorio.
+          </span>
+        </div>
+
+        <div>
+          <label for="cantidad_mesas" class="block text-sm font-medium text-gray-700 mb-1">
+            Cantidad de mesas
+          </label>
+          <input 
+            id="cantidad_mesas"
+            type="number"
+            formControlName="cantidad_mesas"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            [ngClass]="{ 'border-red-500': salonForm.get('cantidad_mesas')?.invalid && salonForm.get('cantidad_mesas')?.touched }"
+          />
+        </div>
+
+        <div>
+          <label for="lounge_state" class="block text-sm font-medium text-gray-700 mb-1">
+            Estado
+          </label>
+          <select 
+            id="lounge_state"
+            formControlName="lounge_state"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+            <option value="ACTIVO">Activo</option>
+            <option value="INACTIVO">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-4 text-sm">
+        {{ errorMessage }}
+      </div>
+
+      <div class="flex justify-end gap-4 pt-4 border-t">
+        <button 
+          (click)="close()"
+          type="button"
+          class="px-5 py-2 rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors">
+          <i class="fa-solid fa-xmark mr-2"></i>
+          Cancelar
+        </button>
+        <button 
+          type="submit"
+          [disabled]="salonForm.invalid || isSaving"
+          class="px-5 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          
+          <span *ngIf="!isSaving">
+            <i class="fa-solid fa-save mr-2"></i>
+            Guardar cambios
+          </span>
+          <span *ngIf="isSaving">
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+            Guardando...
+          </span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

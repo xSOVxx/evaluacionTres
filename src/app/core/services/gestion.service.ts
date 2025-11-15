@@ -73,7 +73,7 @@ export class GestionService {
     }
     const url = `${this.baseUrl}/tablee/getTableeByLoungeId/${lounge_id}/${esGestion}`;
     return this.http.get<ApiResponseMesas>(url).pipe(
-      map((response) => (response.tipo === 'SUCCESS' ? response.data : [])),
+      map((response) => (response.tipo === '1' ? response.data : [])),
       catchError(this.handleError)
     );
   }
@@ -85,7 +85,7 @@ export class GestionService {
   getMesaById(tableId: string): Observable<Mesa | null> {
     const url = `${this.baseUrl}/tablee/tablee/${tableId}`;
     return this.http.get<ApiResponseMesaUnica>(url).pipe(
-      map((response) => (response.tipo === 'SUCCESS' ? response.data : null)),
+      map((response) => (response.tipo === '1' ? response.data : null)),
       catchError(this.handleError)
     );
   }
@@ -97,7 +97,7 @@ export class GestionService {
   getAllMesas(): Observable<Mesa[]> {
     const url = `${this.baseUrl}/tablee/getTables`;
     return this.http.get<ApiResponseMesas>(url).pipe(
-      map((response) => (response.tipo === 'SUCCESS' ? response.data : [])),
+      map((response) => (response.tipo === '1' ? response.data : [])),
       catchError(this.handleError)
     );
   }

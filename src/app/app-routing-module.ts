@@ -4,17 +4,15 @@ import { Layout } from './shared/components/layout/layout';
 import { AuthGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
-  // --- RUTA PÚBLICA: LOGIN ---
   {
     path: 'login',
     loadChildren: () => import('./features/auth/auth-module').then(m => m.AuthModule)
   },
 
-  // --- RUTAS PRIVADAS (Protegidas por el Guard) ---
   {
-    path: '', // La raíz de la app ('/')
-    component: Layout, // Carga el Layout (Navbar/Sidebar)
-    canActivate: [ AuthGuard ],  // ¡Usa el guardián para protegerlas!
+    path: '',
+    component: Layout, 
+    canActivate: [ AuthGuard ],  
     children: [
       {
         path: 'salones',
@@ -28,12 +26,9 @@ export const routes: Routes = [
         path: 'clientes',
         loadChildren: () => import('./features/clientes/clientes-module').then(m => m.ClientesModule)
       },
-      // ... (Aquí irán 'clientes', 'usuarios' cuando los actives)
-      
-      // --- Ruta por defecto (si estás logueado y vas a '/') ---
       {
         path: '',
-        redirectTo: 'salones', // Te redirige a la página principal de tu app
+        redirectTo: 'salones', 
         pathMatch: 'full'
       }
     ]

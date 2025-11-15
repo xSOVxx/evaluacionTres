@@ -3,6 +3,12 @@ import { inject } from '@angular/core';
 import { Auth } from '../auth/services/auth';
 
 export const tokenInterceptor: HttpInterceptorFn = (request, next) => {
+  // No agregar token a las rutas de autenticación
+  if (request.url.includes('/login') || request.url.includes('/register')) {
+    console.log("⛔ Ruta excluida del interceptor:", request.url);
+    return next(request);
+  }
+
   const authService = inject(Auth);
   const token = authService.getToken();
 
@@ -10,11 +16,20 @@ export const tokenInterceptor: HttpInterceptorFn = (request, next) => {
   console.log("URL:", request.url);
 
   if (token) {
-    const cloned = request.clone({
+    let cloned = request.clone({
       setHeaders: {
-        Authorization: token 
+        'Authorization': `Token token="${token}"`
       }
     });
+
+    // Si es POST o PUT, también agregamos el token al body
+    if ((request.method === 'POST' || request.method === 'PUT') && request.body) {
+      const body = typeof request.body === 'object' ? request.body : {};
+      cloned = cloned.clone({
+        body: { ...body, token: token }
+      });
+    }
+
     return next(cloned);
   }
 

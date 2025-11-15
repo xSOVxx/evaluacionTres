@@ -63,6 +63,7 @@ export class Auth {
 
         // ✔ Token viene dentro de data
         const token = response.data.token;
+        console.log('🔑 Token recibido del login:', token);
         this.guardarToken(token);
 
         // ✔ Usuario simplificado según tu interface
@@ -79,6 +80,7 @@ export class Auth {
   }
 
   private guardarToken(token: string): void {
+    console.log('💾 Guardando token en localStorage:', token);
     this.setItem('authToken', token);
   }
 
@@ -96,7 +98,9 @@ export class Auth {
   }
 
   public getToken(): string | null {
-    return this.getItem('authToken');
+    const token = this.getItem('authToken');
+    console.log('🔍 Token recuperado de localStorage:', token);
+    return token;
   }
 
   public isLoggedIn(): boolean {

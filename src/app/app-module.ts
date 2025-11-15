@@ -7,7 +7,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { SharedModule } from './shared/shared-module';
-//import { ButtonModule } from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+;
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -18,11 +22,15 @@ import { SharedModule } from './shared/shared-module';
     BrowserModule,
     AppRoutingModule,
     SharedModule,
+    ButtonModule,
+    FontAwesomeModule,
+    BrowserAnimationsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideClientHydration(withEventReplay()),
+    provideHttpClient(withFetch()),
     provideAnimationsAsync(),
         providePrimeNG({
             theme: {

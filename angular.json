@@ -34,7 +34,13 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+                      
+        
+              "src/styles.scss",
+
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+
+
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -93,8 +99,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/@primeng/themes/aura/theme.css"
+              "src/styles.scss"
+              
             ]
           }
         }

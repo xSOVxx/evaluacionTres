@@ -1,1 +1,21 @@
-<p>navbar works!</p>
+<header class="relative bg-white shadow-md z-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      
+      <div class="flex items-center">
+        
+        <button 
+          (click)="onMenuToggle.emit()" 
+          type="button"
+          class="p-2 rounded-md text-gray-600 hover:bg-gray-100 hover:text-gray-800 transition mr-2">
+          
+          <i class="fa-solid fa-bars text-xl"></i>
+
+        </button>
+
+        <h1 class="text-xl font-semibold text-gray-800">Polleria</h1>
+      </div>
+      
+    </div>
+  </div>
+</header>

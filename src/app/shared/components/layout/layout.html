@@ -1,1 +1,14 @@
-<p>layout works!</p>
+<div class="flex flex-col h-screen overflow-hidden bg-gray-100">
+
+  <app-navbar (onMenuToggle)="sidebarVisible = true"></app-navbar>
+
+  <app-sidebar 
+    [visible]="sidebarVisible"
+    (onClose)="sidebarVisible = false">
+  </app-sidebar>
+  
+  <main class="flex-1 relative overflow-y-auto focus:outline-none p-6">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

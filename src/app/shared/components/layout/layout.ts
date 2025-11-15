@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './layout.scss',
 })
 export class Layout {
-
+  sidebarVisible: boolean = false;
 }

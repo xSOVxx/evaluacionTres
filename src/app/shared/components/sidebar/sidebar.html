@@ -1,1 +1,90 @@
-<p>sidebar works!</p>
+<div 
+  class="fixed inset-0 z-30 transition-opacity duration-300"
+  [ngClass]="{
+    'pointer-events-auto': visible,
+    'pointer-events-none': !visible
+  }">
+
+  <div 
+    (click)="close()"
+    class="absolute inset-0 bg-black/50 transition-opacity"
+    [ngClass]="{
+      'opacity-100': visible,
+      'opacity-0': !visible
+    }">
+  </div>
+
+  <div 
+    class="relative flex flex-col h-full bg-white shadow-xl transition-transform duration-300 ease-in-out w-full md:w-80 lg:w-[30rem]"
+    [ngClass]="{
+      'translate-x-0': visible,
+      '-translate-x-full': !visible
+    }">
+
+    <div class="flex items-center justify-between p-4 border-b">
+      <h2 class="text-xl font-bold text-gray-800">Menú Principal</h2>
+      <button (click)="close()" class="p-2 rounded-md text-gray-600 hover:bg-gray-100">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+
+    <div class="flex flex-col h-full overflow-y-auto">
+    
+      <div *ngIf="usuario$ | async as usuario" class="p-4 text-center text-white rounded-md m-4" style="background-color: #3b82f6;">
+        <i class="fa-solid fa-user-circle text-6xl mb-3"></i> 
+        <h3 class="text-xl font-semibold">{{ usuario.nombre }}</h3>
+        <p class="text-sm text-blue-100">{{ usuario.email }}</p>
+      </div>
+  
+      <nav class="flex-1 px-2 space-y-2">
+        
+        <a 
+          routerLink="/salones" 
+          (click)="close()" 
+          class="flex items-center px-4 py-3 rounded-md text-gray-700"
+          [ngClass]="isRouteActive('/salones') ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'">
+          <i class="fa-solid fa-store w-6 text-center mr-3"></i>
+          <span>Salones y mesas</span>
+        </a>
+  
+        <a 
+          routerLink="/productos"
+          (click)="close()" 
+          class="flex items-center px-4 py-3 rounded-md text-gray-700"
+          [ngClass]="isRouteActive('/productos') ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'">
+          <i class="fa-solid fa-utensils w-6 text-center mr-3"></i>
+          <span>Categorías y productos</span>
+        </a>
+  
+        <a 
+          routerLink="/clientes" 
+          (click)="close()"
+          class="flex items-center px-4 py-3 rounded-md text-gray-700"
+          [ngClass]="isRouteActive('/clientes') ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'">
+          <i class="fa-solid fa-user-group w-6 text-center mr-3"></i>
+          <span>Clientes</span>
+        </a>
+  
+        <a class="flex items-center px-4 py-3 rounded-md text-gray-400 cursor-not-allowed">
+          <i class="fa-solid fa-users w-6 text-center mr-3"></i>
+          <span>Informe de ventas</span>
+        </a>
+  
+        <a class="flex items-center px-4 py-3 rounded-md text-gray-400 cursor-not-allowed">
+          <i class="fa-solid fa-users w-6 text-center mr-3"></i>
+          <span>Usuarios</span>
+        </a>
+  
+      </nav>
+  
+      <div class="mt-auto p-2">
+        <button 
+          (click)="cerrarSesion()"
+          class="flex items-center justify-center w-full px-4 py-3 rounded-md text-red-600 bg-red-50 border border-red-200 hover:bg-red-100">
+          <i class="fa-solid fa-right-from-bracket mr-3"></i>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </div>
+    
+  </div> </div>

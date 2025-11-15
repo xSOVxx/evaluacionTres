@@ -9,13 +9,14 @@ import {ApiResponseMesaUnica} from '../interfaces/salones-mesas/api-response-mes
 import {ApiResponseMesas} from '../interfaces/salones-mesas/api-response-mesas';
 import {Mesa} from '../interfaces/salones-mesas/mesa';
 import {MesaPayload} from '../interfaces/salones-mesas/mesa-payload';
+import { environment } from '../../../enviroments/environment';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class GestionService {
-  private baseUrl = 'https://pidemesa.orealy.xyz/api/rest';
+  private baseUrl = environment.apiUrl.api;
   constructor(private http: HttpClient) {}
 
 

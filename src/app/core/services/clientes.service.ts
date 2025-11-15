@@ -4,6 +4,7 @@ import { Observable, map, catchError, throwError } from 'rxjs';
 import { ApiResponseClientes } from '../interfaces/clientes/api-response-clientes';
 import { Cliente } from '../interfaces/clientes/cliente';
 import { ClientePayload } from '../interfaces/clientes/cliente-payload';
+import { environment } from '../../../enviroments/environment';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import { ClientePayload } from '../interfaces/clientes/cliente-payload';
 })
 export class ClienteService {
   
-  private baseUrl = 'https://pidemesa.orealy.xyz/api/rest/customer'; 
+  private baseUrl = `${environment.apiUrl.api}/customer`; 
 
   constructor(private http: HttpClient) { }
 

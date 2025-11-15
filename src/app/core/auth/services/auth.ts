@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { LoginResponse } from '../../interfaces/login-response';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../../enviroments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
 
-  private baseUrl = 'https://pidemesa.orealy.xyz/public/rest/common';
+  private baseUrl = environment.apiUrl.auth;
   private isBrowser: boolean;
 
   private _currentUser = new BehaviorSubject<UsuarioInterface | null>(null);

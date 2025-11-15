@@ -1,4 +1,7 @@
 export const environment = {
   production: false,
-  baseUrl: 'https://pidemesa.orealy.xyz/public/rest/common' 
+  apiUrl: {
+    auth: 'https://pidemesa.orealy.xyz/public/rest/common',
+    api: 'https://pidemesa.orealy.xyz/api/rest'
+  }
 };

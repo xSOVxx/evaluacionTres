@@ -1,1 +1,120 @@
-<p>detalle-categoria works!</p>
+<div class="detalle-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="title-section">
+      <button class="btn-back" (click)="volver()">← </button>
+      <h1>
+        <span *ngIf="categoria">Categoría: <strong>{{ categoria.category_name }}</strong></span>
+        <span *ngIf="!categoria">Cargando...</span>
+      </h1>
+      <button class="btn-edit" *ngIf="categoria" (click)="abrirModalEditarCategoria(categoria)">
+        ✏️ Editar categoría
+      </button>
+    </div>
+  </div>
+
+  <!-- Subcategorías -->
+  <div class="subcategorias-section" *ngIf="subcategorias$ | async as subcategorias">
+    <div class="section-header">
+      <h2>Subcategorías</h2>
+      <button class="btn-primary-small" (click)="abrirModalCrearSubcategoria()">
+        ➕ Crear subcategoría
+      </button>
+    </div>
+
+    <div class="subcategorias-grid" *ngIf="subcategorias.length > 0">
+      <div
+        *ngFor="let sub of subcategorias"
+        class="subcategoria-card"
+        (click)="verSubcategoria(sub)"
+      >
+        <h3>{{ sub.category_name }}</h3>
+        <p class="producto-count">{{ sub.product_count || 0 }} prod.</p>
+      </div>
+    </div>
+
+    <p class="empty-message" *ngIf="subcategorias.length === 0">
+      No hay subcategorías
+    </p>
+  </div>
+
+  <!-- Productos -->
+  <div class="productos-section">
+    <div class="section-header">
+      <input
+        type="text"
+        [formControl]="filtroBusqueda"
+        placeholder="Buscar productos de la categoría"
+        class="search-input"
+      />
+      <button class="btn-primary" (click)="abrirModalCrearProducto()">
+        ➕ Crear producto
+      </button>
+    </div>
+
+    <!-- Tabla de productos -->
+    <div class="tabla-container" *ngIf="productos$ | async as productos">
+      <table class="productos-tabla" *ngIf="productos.length > 0">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productos">
+            <td>{{ producto.product_name }}</td>
+            <td>Quedan {{ producto.product_stock }} und</td>
+            <td>S/ {{ producto.product_price | number:'1.2-2' }}</td>
+            <td class="acciones">
+              <button class="btn-icon" (click)="abrirModalEditarProducto(producto)">
+                ✏️
+              </button>
+              <button
+                class="btn-icon"
+                [class.activo]="producto.product_state === 'ACTIVO'"
+                [class.inactivo]="producto.product_state === 'INACTIVO'"
+              >
+                <span *ngIf="producto.product_state === 'ACTIVO'">✓</span>
+                <span *ngIf="producto.product_state === 'INACTIVO'">⊘</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mensaje vacío -->
+      <div *ngIf="!cargandoProductos && productos.length === 0" class="empty-state">
+        <p>No hay productos en esta categoría</p>
+        <button class="btn-primary" (click)="abrirModalCrearProducto()">
+          Crear primer producto
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="cargandoProductos" class="loading">
+        Cargando productos...
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modales -->
+<app-producto-modal
+  *ngIf="modalProductoVisible"
+  [producto]="productoParaEditar"
+  [categoriaId]="categoriaId"
+  (cerrar)="cerrarModalProducto()"
+  (guardado)="onProductoGuardado()"
+></app-producto-modal>
+
+<app-categoria-modal
+  *ngIf="modalSubcategoriaVisible"
+  [categoria]="subcategoriaParaEditar"
+  [categoriaParentId]="categoriaId"
+  (cerrar)="cerrarModalSubcategoria()"
+  (guardado)="onSubcategoriaGuardada()"
+></app-categoria-modal>
+

@@ -1,0 +1,118 @@
+<div class="modal-overlay" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>➕ {{ titulo }}</h2>
+      <button class="btn-close" (click)="cerrarModal()" [disabled]="guardando">
+        ✕
+      </button>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <!-- Nombre -->
+        <div class="form-group">
+          <label for="category_name">Nombre de la categoría</label>
+          <input
+            id="category_name"
+            type="text"
+            formControlName="category_name"
+            placeholder="Ej: Terraza"
+            class="form-input"
+            [class.error]="
+              categoriaForm.get('category_name')?.invalid &&
+              categoriaForm.get('category_name')?.touched
+            "
+          />
+          <span
+            class="error-message"
+            *ngIf="
+              categoriaForm.get('category_name')?.invalid &&
+              categoriaForm.get('category_name')?.touched
+            "
+          >
+            El nombre es requerido (mínimo 2 caracteres)
+          </span>
+        </div>
+
+        <!-- URL Imagen -->
+        <div class="form-group">
+          <label for="category_urlimage">🔗 Sube una imagen</label>
+          <p class="help-text">
+            Esta imagen se mostrará en todas las categorías y subcategorías; por lo que
+            recomendamos usar una resolución de 800 x 420 px
+          </p>
+          <div class="image-upload-area">
+            <input
+              id="category_urlimage"
+              type="text"
+              formControlName="category_urlimage"
+              placeholder="URL de la imagen"
+              class="form-input"
+            />
+            <div class="upload-placeholder" *ngIf="!categoriaForm.value.category_urlimage">
+              <span class="upload-icon">☁️</span>
+              <p>Da clic para subir una imagen</p>
+              <p class="upload-format">JPG o PNG (800 x 420 px)</p>
+            </div>
+            <img
+              *ngIf="categoriaForm.value.category_urlimage"
+              [src]="categoriaForm.value.category_urlimage"
+              alt="Preview"
+              class="image-preview"
+            />
+          </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="form-group">
+          <label>Estado</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input
+                type="radio"
+                formControlName="category_state"
+                value="ACTIVO"
+              />
+              <span>Activo</span>
+            </label>
+            <label class="radio-label">
+              <input
+                type="radio"
+                formControlName="category_state"
+                value="INACTIVO"
+              />
+              <span>Inactivo</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Error global -->
+        <div class="alert alert-error" *ngIf="errorMensaje">
+          {{ errorMensaje }}
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="cerrarModal()"
+          [disabled]="guardando"
+        >
+          ⊗ Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="guardando || categoriaForm.invalid"
+        >
+          <span *ngIf="!guardando">💾 Guardar cambios</span>
+          <span *ngIf="guardando">Guardando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

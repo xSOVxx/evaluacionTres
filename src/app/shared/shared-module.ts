@@ -8,6 +8,8 @@ import { Sidebar } from './components/sidebar/sidebar';
 import { SalonModal } from './components/salon-modal/salon-modal';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ClienteModal } from './components/cliente-modal/cliente-modal';
+import { CategoriaModal } from './components/categoria-modal/categoria-modal';
+import { ProductoModal } from './components/producto-modal/producto-modal';
 
 
 
@@ -18,7 +20,9 @@ import { ClienteModal } from './components/cliente-modal/cliente-modal';
     Navbar,
     Sidebar,
     SalonModal,
-    ClienteModal
+    ClienteModal,
+    CategoriaModal,
+    ProductoModal
   ],
   imports: [
     CommonModule,
@@ -31,7 +35,9 @@ import { ClienteModal } from './components/cliente-modal/cliente-modal';
     Navbar,
     Sidebar,
     SalonModal,
-    ClienteModal
+    ClienteModal,
+    CategoriaModal,
+    ProductoModal
   ]
 })
 export class SharedModule { }

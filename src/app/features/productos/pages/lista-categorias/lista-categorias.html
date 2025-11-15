@@ -1,1 +1,78 @@
-<p>lista-categorias works!</p>
+<div class="categorias-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>🍽️ Categorías y productos</h1>
+    <button class="btn-primary" (click)="abrirModalCrearCategoria()">
+      ➕ Crear categoría
+    </button>
+  </div>
+
+  <!-- Buscador -->
+  <div class="search-section">
+    <input
+      type="text"
+      [formControl]="filtroBusqueda"
+      placeholder="Buscar categorías"
+      class="search-input"
+    />
+  </div>
+
+  <!-- Mensaje informativo -->
+  <p class="info-message">
+    ℹ️ Para crear un producto ingresa a una categoría
+  </p>
+
+  <!-- Grid de categorías -->
+  <div class="categorias-grid" *ngIf="categorias$ | async as categorias">
+    <!-- Skeleton mientras carga -->
+    <div *ngIf="cargandoCategorias" class="skeleton-grid">
+      <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6]"></div>
+    </div>
+
+    <!-- Categorías -->
+    <div
+      *ngFor="let categoria of categorias"
+      class="categoria-card"
+      (click)="verDetalleCategoria(categoria)"
+    >
+      <div class="categoria-header">
+        <h3>{{ categoria.category_name }}</h3>
+        <button
+          class="btn-edit"
+          (click)="abrirModalEditarCategoria(categoria); $event.stopPropagation()"
+        >
+          ✏️
+        </button>
+      </div>
+      
+      <p class="producto-count">{{ categoria.product_count || 0 }} prod.</p>
+      
+      <div class="categoria-footer">
+        <span
+          class="badge"
+          [class.badge-active]="categoria.category_state === 'ACTIVO'"
+          [class.badge-inactive]="categoria.category_state === 'INACTIVO'"
+        >
+          {{ categoria.category_state }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Mensaje si no hay categorías -->
+    <div *ngIf="!cargandoCategorias && categorias.length === 0" class="empty-state">
+      <p>No se encontraron categorías</p>
+      <button class="btn-primary" (click)="abrirModalCrearCategoria()">
+        Crear primera categoría
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear/editar categoría -->
+<app-categoria-modal
+  *ngIf="modalVisible"
+  [categoria]="categoriaParaEditar"
+  (cerrar)="cerrarModal()"
+  (guardado)="onCategoriaGuardada()"
+></app-categoria-modal>
+

@@ -1,0 +1,153 @@
+<div class="modal-overlay" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>➕ {{ titulo }}</h2>
+      <button class="btn-close" (click)="cerrarModal()" [disabled]="guardando">
+        ✕
+      </button>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <!-- Nombre del producto -->
+        <div class="form-group">
+          <label for="product_name">Nombre del producto</label>
+          <input
+            id="product_name"
+            type="text"
+            formControlName="product_name"
+            placeholder="Ejm: Terraza"
+            class="form-input"
+            [class.error]="
+              productoForm.get('product_name')?.invalid &&
+              productoForm.get('product_name')?.touched
+            "
+          />
+          <span
+            class="error-message"
+            *ngIf="
+              productoForm.get('product_name')?.invalid &&
+              productoForm.get('product_name')?.touched
+            "
+          >
+            El nombre es requerido
+          </span>
+        </div>
+
+        <!-- Precio -->
+        <div class="form-group">
+          <label for="product_price">Precio del producto</label>
+          <input
+            id="product_price"
+            type="number"
+            formControlName="product_price"
+            placeholder="0"
+            class="form-input"
+            [class.error]="
+              productoForm.get('product_price')?.invalid &&
+              productoForm.get('product_price')?.touched
+            "
+          />
+        </div>
+
+        <!-- Stock -->
+        <div class="form-group">
+          <label for="product_stock">Stock del producto</label>
+          <input
+            id="product_stock"
+            type="number"
+            formControlName="product_stock"
+            placeholder="0"
+            class="form-input"
+            [class.error]="
+              productoForm.get('product_stock')?.invalid &&
+              productoForm.get('product_stock')?.touched
+            "
+          />
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label for="product_description">Descripción (opcional)</label>
+          <textarea
+            id="product_description"
+            formControlName="product_description"
+            placeholder="Descripción del producto"
+            class="form-textarea"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <!-- Necesita preparación -->
+        <div class="form-group">
+          <label>Necesita preparación</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                [checked]="productoForm.value.product_needpreparation === '1'"
+                (change)="productoForm.patchValue({ product_needpreparation: $any($event.target).checked ? '1' : '0' })"
+              />
+              <span>Sí</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Sube una imagen -->
+        <div class="form-group">
+          <label for="product_urlimage">🔗 Sube una imagen</label>
+          <p class="help-text">
+            Recomendamos usar una resolución de 800 x 420 px
+          </p>
+          <div class="image-upload-area">
+            <input
+              id="product_urlimage"
+              type="text"
+              formControlName="product_urlimage"
+              placeholder="URL de la imagen"
+              class="form-input"
+            />
+            <div class="upload-placeholder" *ngIf="!productoForm.value.product_urlimage">
+              <span class="upload-icon">☁️</span>
+              <p>Da clic para subir una imagen</p>
+              <p class="upload-format">JPG o PNG (800 x 420 px)</p>
+            </div>
+            <img
+              *ngIf="productoForm.value.product_urlimage"
+              [src]="productoForm.value.product_urlimage"
+              alt="Preview"
+              class="image-preview"
+            />
+          </div>
+        </div>
+
+        <!-- Error global -->
+        <div class="alert alert-error" *ngIf="errorMensaje">
+          {{ errorMensaje }}
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn-secondary"
+          (click)="cerrarModal()"
+          [disabled]="guardando"
+        >
+          ⊗ Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="guardando || productoForm.invalid"
+        >
+          <span *ngIf="!guardando">💾 Guardar cambios</span>
+          <span *ngIf="guardando">Guardando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

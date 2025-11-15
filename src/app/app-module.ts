@@ -6,6 +6,7 @@ import { App } from './app';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
+import { SharedModule } from './shared/shared-module';
 //import { ButtonModule } from 'primeng/button';
 
 
@@ -16,7 +17,7 @@ import Aura from '@primeuix/themes/aura';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    //ButtonModule
+    SharedModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

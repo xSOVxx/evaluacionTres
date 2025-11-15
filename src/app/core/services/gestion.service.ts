@@ -31,7 +31,6 @@ export class GestionService {
       store_id: storeId
     };
     
-    // Cambiado de 'http.get' a 'http.post'
     return this.http.post<ApiResponseSalones>(url, body).pipe(
 
       map((response) => (response.tipo === '1' ? response.data : [])),
@@ -39,32 +38,17 @@ export class GestionService {
     );
   }
 
-  /**
-   * Endpoint 2: Crear Salón
-   * POST /lounge/lounge
-   */
   createSalon(salonData: SalonPayload): Observable<any> {
     const url = `${this.baseUrl}/lounge/lounge`;
-    // lounge_id sea null para crear
     const body = { ...salonData, lounge_id: null, store_id: 1 };
     return this.http.post(url, body).pipe(catchError(this.handleError));
   }
 
-  /**
-   * Endpoint 3: Editar Salón
-   * PUT /lounge/lounge 
-   */
   updateSalon(salonData: SalonPayload): Observable<any> {
     const url = `${this.baseUrl}/lounge/lounge`;
     return this.http.put(url, salonData).pipe(catchError(this.handleError));
   }
 
-  // --- 2. GESTIÓN DE MESAS (TABLEES) ---
-
-  /**
-   * Endpoint 4: Obtener Mesas por Salón
-   * GET /tablee/getTableeByLoungeId/{lounge_id}/{esGestion}
-   */
   getMesasPorSalon(
     lounge_id: string,
     esGestion: string = '1'
@@ -112,10 +96,8 @@ export class GestionService {
     return this.http.put(url, mesaData).pipe(catchError(this.handleError));
   }
 
-  // --- MANEJADOR DE ERRORES ---
   private handleError(error: HttpErrorResponse) {
     let userMessage = 'Ocurrió un error inesperado. Intente más tarde.';
-    // El 'throwError' debe devolver una función
     return throwError(() => new Error(userMessage));
   }
 }

@@ -12,28 +12,19 @@ import { FormControl } from '@angular/forms';
 })
 export class ListaClientes implements OnInit {
   
-  // 1. Observable que alimenta la tabla
   public clientes$!: Observable<Cliente[]>;
-  
-  // 2. FormControl para el campo de búsqueda (Búsqueda reactiva)
   public searchControl = new FormControl('');
-  
-  // 3. Estado del modal (para el futuro)
   public modalVisible: boolean = false;
   public clienteParaEditar: Cliente | null = null;
 
   constructor(private clienteService: ClienteService) {}
 
   ngOnInit(): void {
-    // 4. Inicializa el Observable para reaccionar a la búsqueda
-    // Cada vez que 'searchControl' cambia, dispara una nueva llamada a la API
     this.clientes$ = this.searchControl.valueChanges.pipe(
-      startWith(''), // Dispara la carga inicial
+      startWith(''),
       switchMap(nombre => this.clienteService.getCustomers(nombre || ''))
     );
   }
-  
-  // --- Métodos de UI y Modal ---
   
   abrirModalCrear() {
     this.clienteParaEditar = null;
@@ -50,9 +41,7 @@ abrirModalEditar(cliente: Cliente) {
   }
   
   onClienteGuardado() {
-    // Después de guardar, cerramos el modal y forzamos una nueva búsqueda 
-    // (emitiendo un valor vacío) para refrescar la lista.
     this.cerrarModal();
     this.searchControl.setValue(this.searchControl.value);
   }
- }
+}

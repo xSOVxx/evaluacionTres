@@ -20,14 +20,6 @@ export class ProductosService {
 
   constructor(private http: HttpClient) { }
 
-  // ========================================
-  // GESTIÓN DE CATEGORÍAS
-  // ========================================
-
-  /**
-   * Endpoint 1: Obtener Categorías/Subcategorías
-   * POST /api/rest/category/getCategories
-   */
   getCategorias(
     category_name: string = '',
     category_categoryid?: number,
@@ -53,10 +45,6 @@ export class ProductosService {
     );
   }
 
-  /**
-   * Endpoint 2: Obtener Categoría por ID
-   * GET /api/rest/category/category/{category_id}
-   */
   getCategoriaById(category_id: number): Observable<Categoria | null> {
     const url = `${this.baseUrl}/category/category/${category_id}`;
     return this.http.get<ApiResponseCategoriaUnica>(url).pipe(
@@ -65,10 +53,6 @@ export class ProductosService {
     );
   }
 
-  /**
-   * Endpoint 3: Crear Categoría/Subcategoría
-   * POST /api/rest/category/category
-   */
   createCategoria(categoriaData: CategoriaPayload): Observable<any> {
     const url = `${this.baseUrl}/category/category`;
     const body = { ...categoriaData, category_id: null };
@@ -77,10 +61,6 @@ export class ProductosService {
     );
   }
 
-  /**
-   * Endpoint 4: Editar Categoría/Subcategoría
-   * PUT /api/rest/category/category
-   */
   updateCategoria(categoriaData: CategoriaPayload): Observable<any> {
     const url = `${this.baseUrl}/category/category`;
     return this.http.put(url, categoriaData).pipe(
@@ -88,14 +68,6 @@ export class ProductosService {
     );
   }
 
-  // ========================================
-  // GESTIÓN DE PRODUCTOS
-  // ========================================
-
-  /**
-   * Endpoint 5: Obtener Productos
-   * POST /api/rest/product/getProducts
-   */
   getProductos(
     product_name: string = '',
     product_categoryid?: string,
@@ -110,7 +82,6 @@ export class ProductosService {
       product_name
     };
 
-    // Agregar parámetros opcionales solo si están definidos
     if (product_categoryid) body.product_categoryid = product_categoryid;
     if (category_id) body.category_id = category_id;
     if (category_name) body.category_name = category_name;
@@ -123,10 +94,6 @@ export class ProductosService {
     );
   }
 
-  /**
-   * Endpoint 6: Crear Producto
-   * POST /api/rest/product/product
-   */
   createProducto(productoData: ProductoPayload): Observable<any> {
     const url = `${this.baseUrl}/product/product`;
     const body = { ...productoData, product_id: null };
@@ -135,10 +102,6 @@ export class ProductosService {
     );
   }
 
-  /**
-   * Endpoint 7: Editar Producto
-   * PUT /api/rest/product/product
-   */
   updateProducto(productoData: ProductoPayload): Observable<any> {
     const url = `${this.baseUrl}/product/product`;
     return this.http.put(url, productoData).pipe(
@@ -146,10 +109,6 @@ export class ProductosService {
     );
   }
 
-  // ========================================
-  // MANEJADOR DE ERRORES
-  // ========================================
-  
   private handleError(error: HttpErrorResponse) {
     let userMessage = 'Ocurrió un error inesperado. Intente más tarde.';
     

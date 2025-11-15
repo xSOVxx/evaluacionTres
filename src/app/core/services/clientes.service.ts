@@ -16,19 +16,11 @@ export class ClienteService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-
-   */
   getCustomers(searchQuery: string = '', status: string = 'Todos'): Observable<Cliente[]> {
     const url = `${this.baseUrl}/getCustomers`;
-
-      console.log("TOKEN ENVIADO:", localStorage.getItem('authToken'));
-
-    
-    //  filtro en el body como un POST
     const body = {
-      search_query: searchQuery, // parámetro para el buscador
-      status: status // Activo/Inactivo/Todos
+      search_query: searchQuery,
+      status: status
     };
     
     return this.http.post<ApiResponseClientes>(url, body).pipe(
@@ -43,9 +35,6 @@ export class ClienteService {
     return this.http.post(url, body).pipe(catchError(this.handleError));
   }
 
-  /**
-   *
-   */
   updateCliente(payload: ClientePayload): Observable<any> {
     const url = `${this.baseUrl}/customer`;
     return this.http.put(url, payload).pipe(catchError(this.handleError));

@@ -13,6 +13,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptor
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { tokenInterceptor } from './core/interceptors/token-interceptor';
+import { errorInterceptor } from './core/interceptors/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -31,9 +32,9 @@ import { tokenInterceptor } from './core/interceptors/token-interceptor';
     provideZonelessChangeDetection(),
     provideClientHydration(withEventReplay()),
     HttpClientModule,
-provideHttpClient(
-    withInterceptors([tokenInterceptor])
-  )
+    provideHttpClient(
+      withInterceptors([tokenInterceptor, errorInterceptor])
+    )
   ],
   bootstrap: [App]
 })
